@@ -18,6 +18,8 @@ galaxy_info:
   galaxy_tags: [ ansible ]
 dependencies:
     - src: adarnimrod.python27
+      name: adarnimrod.python27
     - src: adarnimrod.gitreceive
+      name: adarnimrod.gitreceive
       gitreceive_receiver_script: "{{ lookup('template', 'receiver.sh') }}"
       gitreceive_public_keys: '{{ pelican_gitreceive_public_keys }}'
