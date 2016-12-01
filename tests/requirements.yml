@@ -1,3 +1,4 @@
 ---
 - src: adarnimrod.openbsd-bootstrap
 - src: adarnimrod.debian-bootstrap
+- src: adarnimrod.nginx

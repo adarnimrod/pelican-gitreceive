@@ -19,7 +19,7 @@ vagrant:
   - name: xenial
     box: ubuntu/xenial64
   instances:
-  - name: example
+  - name: pelican-gitreceive
     options:
         append_platform_to_hostname: yes
   raw_config_args:
@@ -30,9 +30,28 @@ vagrant:
 
 docker:
   containers:
-  - name: example-xenial
+  - name: pelican-gitreceive-xenial
     image: ubuntu
     image_version: xenial
+    command: /sbin/init
+    cap_add:
+      - SYS_ADMIN
+    volume_mounts:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
+    environment:
+        DEBIAN_FRONTEND: noninteractive
+        container: docker
+  - name: pelican-gitreceive-trusty
+    image: ubuntu-upstart
+    image_version: trusty
+    command: /sbin/init
+    environment:
+        DEBIAN_FRONTEND: noninteractive
+        container: docker
+  - name: pelican-gitreceive-jessie
+    image: debian
+    image_version: jessie
     command: /sbin/init
     cap_add:
       - SYS_ADMIN

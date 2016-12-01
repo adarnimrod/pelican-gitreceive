@@ -1,8 +1,25 @@
 ---
-# tasks file for example
-
+# tasks file for pelican-gitreceive
 - name: Assertions
   assert:
     that:
         - ansible_os_family in ['OpenBSD', 'Debian']
-        - ansible_distribution_release in ['6.0', 'xenial']
+        - ansible_distribution_release in ['6.0', 'xenial', 'trusty', 'jessie']
+        - pelican_gitreceive_public_keys is iterable
+        - pelican_gitreceive_output is defined
+
+- name: pip install
+  with_items:
+      - pelican
+      - fabric
+  pip:
+      name: '{{ item }}'
+      state: present
+
+- name: Create directory structure
+  file:
+      path: /var/www/htdocs/www.shore.co.il/blog/
+      owner: git
+      group: git
+      state: directory
+      mode: 0o0755

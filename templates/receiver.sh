@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+echo Recieving blog...
+tempdir="$(mktemp -d)"
+cd $tempdir
+tar -xf -
+echo Fetching Git submodules
+git submodule update --init --recursive
+echo Building blog...
+fab  build
+echo Syncing blog...
+rsync -Prv --delete --cvs-exclude output/ {{ pelican_gitreceive_output }}
+echo Cleanup...
+cd -
+rm -r "$tempdir"
+echo Successfully finished...

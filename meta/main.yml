@@ -1,6 +1,6 @@
 galaxy_info:
   author: Nimrod Adar
-  description: An example Ansible role
+  description: Publish a Pelican blog with gitreceive
   company: Shore technologies
   license: MIT
   min_ansible_version: 2.0
@@ -11,5 +11,13 @@ galaxy_info:
   - name: Ubuntu
     versions:
     - xenial
+    - trusty
+  - name: Debian
+    versions:
+    - jessie
   galaxy_tags: [ ansible ]
-dependencies: []
+dependencies:
+    - src: adarnimrod.python27
+    - src: adarnimrod.gitreceive
+      gitreceive_receiver_script: "{{ lookup('template', 'receiver.sh') }}"
+      gitreceive_public_keys: '{{ pelican_gitreceive_public_keys }}'

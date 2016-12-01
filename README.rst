@@ -1,12 +1,9 @@
-Example
-#######
+pelican-gitreceive
+##################
 
-.. image:: https://travis-ci.org/adarnimrod/example.svg?branch=master
-    :target: https://travis-ci.org/adarnimrod/example
-
-An (empty) example Ansible role complete with working tests out of the box. For
-more information read the `blog post
-<https://www.shore.co.il/blog/ansible-example-role/>`_.
+Publish a Pelican blog with gitreceive. Run :code:`git remote add publish
+git@hostname:blog` to add the git remote and run :code:`git push publish` to
+publish changes. This role does not configure a webserver.
 
 Requirements
 ------------
@@ -61,3 +58,8 @@ Nimrod Adar, `contact me <nimrod@shore.co.il>`_ or visit my `website
 <https://www.shore.co.il/>`_. Patches are welcome via `git send-email
 <http://git-scm.com/book/en/v2/Git-Commands-Email>`_. The repository is located
 at: https://www.shore.co.il/git/.
+
+TODO
+----
+
+- Tests.

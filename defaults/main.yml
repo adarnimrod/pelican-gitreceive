@@ -1,2 +1,4 @@
 ---
-# defaults file for example
+# defaults file for pelican-gitreceive
+pelican_gitreceive_output: '{{ pelican_gitreceive_www_root[ansible_os_family] }}/blog'
+pelican_gitreceive_public_keys: []

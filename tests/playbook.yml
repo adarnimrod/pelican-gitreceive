@@ -1,12 +1,21 @@
 ---
-- hosts: example-openbsd
+- hosts: pelican-gitreceive-openbsd
   gather_facts: false
   roles: [adarnimrod.openbsd-bootstrap]
 
-- hosts: example-xenial
+- hosts: pelican-gitreceive-xenial
   gather_facts: false
   roles: [adarnimrod.debian-bootstrap]
 
 - hosts: all
+  pre_tasks:
+      - name: Create SSH keypair
+        become: False
+        local_action: command ssh-keygen -t rsa -N '' -f files/id_rsa
+        run_once: True
+        args:
+            creates: files/id_rsa
   roles:
-    - role: example
+    - role: adarnimrod.nginx
+    - role: pelican-gitreceive
+      pelican_gitreceive_public_keys: ['{{ lookup("file", "id_rsa.pub") }}']

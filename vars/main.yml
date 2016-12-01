@@ -1,2 +1,5 @@
 ---
-# vars file for example
+# vars file for pelican-gitreceive
+pelican_gitreceive_www_root:
+    Debian: /var/www
+    OpenBSD: /var/www/htdocs
