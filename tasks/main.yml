@@ -8,6 +8,13 @@
         - pelican_gitreceive_public_keys is iterable
         - pelican_gitreceive_output is defined
 
+- name: APT install prerequisites
+  apt:
+      name: python-dev
+      state: present
+      update_cache: yes
+      cache_valid_time: 3600
+
 - name: pip install
   with_items:
       - pelican
