@@ -8,6 +8,7 @@
   roles: [adarnimrod.debian-bootstrap]
 
 - hosts: all
+  strategy: free
   pre_tasks:
       - name: Create SSH keypair
         become: False
