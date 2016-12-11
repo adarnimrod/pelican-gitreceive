@@ -8,14 +8,16 @@
   roles: [adarnimrod.debian-bootstrap]
 
 - hosts: all
-  strategy: free
-  pre_tasks:
+  tasks:
       - name: Create SSH keypair
         become: False
         local_action: command ssh-keygen -t rsa -N '' -f files/id_rsa
         run_once: True
         args:
             creates: files/id_rsa
+
+- hosts: all
+  strategy: free
   roles:
     - role: adarnimrod.nginx
     - role: pelican-gitreceive
