@@ -16,6 +16,18 @@
         args:
             creates: files/id_rsa
 
+      - name: Install SSH server
+        when: ansible_pkg_mgr == 'apt'
+        apt:
+            name: openssh-server
+            state: present
+
+      - name: Start SSH service
+        when: ansible_pkg_mgr == 'apt'
+        service:
+            name: ssh
+            state: started
+
 - hosts: all
   strategy: free
   roles:
