@@ -22,3 +22,55 @@
     - role: adarnimrod.nginx
     - role: pelican-gitreceive
       pelican_gitreceive_public_keys: ['{{ lookup("file", "id_rsa.pub") }}']
+  post_tasks:
+      - name: Install curl
+        package:
+            name: curl
+            state: present
+
+      - name: Create .ssh directory
+        file:
+            path: /root/.ssh
+            owner: root
+            group: 0
+            mode: 0o0700
+            state: directory
+
+      - name: Copy private SSH key
+        copy:
+            src: id_rsa
+            dest: /root/.ssh/blog_rsa
+            owner: root
+            group: 0
+            mode: 0o0400
+
+      - name: Add SSH config
+        blockinfile:
+            dest: /root/.ssh/config
+            state: present
+            create: yes
+            block: |
+                Host localhost
+                HostName localhost
+                User git
+                IdentityFile /root/.ssh/blog_rsa
+
+      - name: Clone test blog
+        git:
+            dest: /root/blog
+            repo: https://www.shore.co.il/git/blog
+            version: master
+            recursive: yes
+
+      - name: Add localhost host keys to known hosts
+        shell: ssh-keyscan localhost > /root/.ssh/known_hosts
+        args:
+            creates: /root/.ssh/known_hosts
+
+      - name: Add localhost as a git remote
+        blockinfile:
+            dest: /root/blog/.git/config
+            block: |
+                [remote "test"]
+                    url = git@localhost:test
+                    fetch = +refs/heads/*:refs/remotes/test/*

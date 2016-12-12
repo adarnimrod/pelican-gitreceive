@@ -1,16 +1,41 @@
 #!/bin/sh
 set -eu
-echo Recieving blog...
-tempdir="$(mktemp -d)"
-cd $tempdir
+
+# This part was copied verbatim from
+# https://github.com/progrium/gitreceive/wiki/TipsAndTricks
+fetch_submodules () {
+    # We reinitialize .git to avoid conflicts
+    rm -fr .git
+    # GIT_DIR is previously set by gitreceive to ".", we want it back to default
+    # for this
+    unset GIT_DIR
+    git init .
+
+    # We read the submodules from .gitmodules
+    git config -f .gitmodules --get-regexp '^submodule\..*\.path$' |
+        while read path_key path
+        do
+            rm -fr $path
+            url_key=`echo $path_key | sed 's/\.path/.url/'`
+            url=`git config -f .gitmodules --get "$url_key"`
+            git submodule add $url $path
+        done
+}
+
+mkdir -p /var/tmp/gitreceive
+cd /var/tmp/gitreceive
+echo '----> Unpacking ...'
 tar -xf -
-echo Fetching Git submodules
-git submodule update --init --recursive
-echo Building blog...
+if [ -f .gitmodules ]
+then
+    echo '----> Fetching submodules ...'
+    fetch_submodules
+fi
+echo '----> Building blog ...'
 fab  build
-echo Syncing blog...
+echo '----> Copying blog ...'
 rsync -Prv --delete --cvs-exclude output/ {{ pelican_gitreceive_output }}
-echo Cleanup...
+echo '----> Cleanup ...'
 cd -
-rm -r "$tempdir"
-echo Successfully finished...
+rm -rf /var/tmp/gitreceive
+echo '----> OK.'

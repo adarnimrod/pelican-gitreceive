@@ -3,12 +3,13 @@
 - name: Assertions
   assert:
     that:
-        - ansible_os_family in ['OpenBSD', 'Debian']
+        - ansible_os_family in pelican_gitreceive_www_root
         - ansible_distribution_release in ['6.0', 'xenial', 'trusty', 'jessie']
         - pelican_gitreceive_public_keys is iterable
         - pelican_gitreceive_output is defined
 
 - name: APT install prerequisites
+  when: ansible_pkg_mgr == 'apt'
   apt:
       name: python-dev
       state: present
@@ -25,7 +26,7 @@
 
 - name: Create directory structure
   file:
-      path: /var/www/htdocs/www.shore.co.il/blog/
+      path: '{{ pelican_gitreceive_www_root[ansible_os_family] }}/blog/'
       owner: git
       group: git
       state: directory
