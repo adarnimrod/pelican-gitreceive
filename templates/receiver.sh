@@ -31,6 +31,8 @@ then
     echo '----> Fetching submodules ...'
     fetch_submodules
 fi
+echo '----> Activating virtualenv ...'
+. /var/lib/pelican-gitreceive/bin/activate
 echo '----> Building blog ...'
 fab  build
 echo '----> Copying blog ...'

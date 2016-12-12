@@ -16,6 +16,10 @@
         files: tests/playbook.yml
         args:
         - tests/playbook.yml
+-   repo: https://github.com/adarnimrod/shell-pre-commit
+    sha: v0.1.0
+    hooks:
+    -   id: shell-lint
 -   repo: https://github.com/willthames/ansible-lint
     sha: 959ab0f525e9abb19cf75f34381015cf33695f61
     hooks:

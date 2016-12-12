@@ -9,6 +9,7 @@ def test_git_push(Command, Sudo):
         push = Command('git -C /root/blog push test')
     assert push.rc == 0
     for message in ['----> Unpacking ...', '----> Fetching submodules ...',
+                    '----> Activating virtualenv ...',
                     '----> Building blog ...', 'Copying blog ...',
                     '----> Cleanup ...', '----> OK.']:
         assert message in push.stderr

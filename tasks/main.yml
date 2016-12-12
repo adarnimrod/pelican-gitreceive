@@ -11,18 +11,29 @@
 - name: APT install prerequisites
   when: ansible_pkg_mgr == 'apt'
   apt:
-      name: python-dev
+      name: [python-dev, libssl-dev, libffi-dev, build-essential]
       state: present
       update_cache: yes
       cache_valid_time: 3600
 
+- name: Create virtualenv directory
+  file:
+      path: /var/lib/pelican-gitreceive
+      owner: git
+      group: git
+      mode: 0o0700
+      state: directory
+
 - name: pip install
+  become: True
+  become_user: git
   with_items:
       - pelican
-      - fabric
+      - Fabric
   pip:
       name: '{{ item }}'
       state: present
+      virtualenv: /var/lib/pelican-gitreceive
 
 - name: Create directory structure
   file:
