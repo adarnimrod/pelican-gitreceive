@@ -41,21 +41,3 @@ docker:
     environment:
         DEBIAN_FRONTEND: noninteractive
         container: docker
-  - name: pelican-gitreceive-trusty
-    image: ubuntu-upstart
-    image_version: trusty
-    command: /sbin/init
-    environment:
-        DEBIAN_FRONTEND: noninteractive
-        container: docker
-  - name: pelican-gitreceive-jessie
-    image: debian
-    image_version: jessie
-    command: /sbin/init
-    privileged: True
-    volume_mounts:
-      - /sys/fs/cgroup:/sys/fs/cgroup
-      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
-    environment:
-        DEBIAN_FRONTEND: noninteractive
-        container: docker
