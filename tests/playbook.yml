@@ -29,7 +29,7 @@
             state: started
 
 - hosts: all
-  strategy: free
+  serial: 1
   roles:
     - role: adarnimrod.nginx
     - role: pelican-gitreceive
